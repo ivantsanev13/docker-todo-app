@@ -2,7 +2,8 @@
 
 A simple, modern **Todo App** with inline editing, built with **Express.js**, **MongoDB**, and **EJS**, and containerized using **Docker** for easy deployment. This app features full CRUD functionality: create, read, update, and delete tasks with an intuitive UI powered by **Bootstrap**.
 
-![App Screenshot](screenshot.png) <!-- Replace this with an actual screenshot -->
+![image](https://github.com/user-attachments/assets/6246f207-02f3-414f-8235-b309bb7bfb91)
+
 
 ## Features
 
@@ -32,7 +33,7 @@ Before you start, ensure you have the following installed:
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/your-username/your-repo-name.git
+   git clone https://github.com/ivantsanev13/docker-todo-app.git
    cd your-repo-name
    ```
 
@@ -53,13 +54,13 @@ Before you start, ensure you have the following installed:
 ## Usage
 
 1. **Adding Tasks**: Use the input field at the top to add a new task.
-2. **Editing Tasks**: Click the **Edit** button next to a task to edit it inline, and click **Update** to save the changes.
+2. **Editing Tasks**: Click the **Edit** button next to a task to edit it, and click **Update** to save the changes.
 3. **Deleting Tasks**: Click the **Delete** button next to a task to remove it.
 
 ## Project Structure
 
 ```plaintext
-multi-container-app/
+todo-app/
 │
 ├── app/
 │   ├── config/
@@ -71,17 +72,13 @@ multi-container-app/
 │   ├── views/
 │   │   └── todos.ejs            # EJS template for the frontend
 │   └── server.js                # Main server file
-├── Dockerfile                   # Dockerfile for the app
+│   └── package-lock.json        # Automatically generated when you run npm install. It locks the versions of dependencies and their sub-dependencies
+│   └── package.json             # Main configuration file for a Node.js project
+│   └── Dockerfile               # Dockerfile for the app
+|
 ├── docker-compose.yml            # Docker Compose setup
 └── README.md                    # Documentation
 ```
-
-## API Endpoints
-
-- **GET /**: Fetches all tasks and renders them on the page.
-- **POST /**: Adds a new task to the database.
-- **POST /todo/update**: Updates an existing task.
-- **POST /todo/destroy**: Deletes a task from the database.
 
 ## Docker Details
 
@@ -95,14 +92,15 @@ This project uses **Docker Compose** to set up both the application and MongoDB 
 To run the project inside Docker, simply use:
 
 ```bash
-docker-compose up --build
+docker-compose up --watch or docker compose up -d
 ```
 
 This will spin up two containers and expose the app on `localhost:3000`. MongoDB will be running on the default port `27017`.
 
 ## Screenshots
 
-![Task Manager Screenshot](screenshot.png) <!-- Replace with actual image link -->
+![image1](https://github.com/user-attachments/assets/ca5d2c34-57d3-4d3e-9508-4cf189df7a61)
+
 
 ## Contributing
 
