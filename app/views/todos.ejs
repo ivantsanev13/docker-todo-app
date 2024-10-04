@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Todo App</title>
+    
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Todo App</h1>
+
+        <!-- Add Task Form (still at the top) -->
+        <form method="POST" action="/" autocomplete="off" class="mb-4">
+            <div class="input-group">
+                <input type="text" name="task" class="form-control" placeholder="Add new task" required>
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Add</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Task List -->
+        <ul class="list-group">
+            <% if (tasks.length > 0) { %>
+                <% tasks.forEach(function(todo) { %>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <!-- Display the task name or input field based on editing state -->
+                        <div class="task-content" id="task-content-<%= todo._id %>">
+                            <span id="task-text-<%= todo._id %>"><%= todo.task %></span>
+                            <input type="text" id="task-input-<%= todo._id %>" class="form-control d-none" value="<%= todo.task %>" />
+                        </div>
+
+                        <!-- Edit, Update, Cancel, and Delete buttons -->
+                        <div>
+                            <!-- Edit Button -->
+                            <button class="btn btn-warning btn-sm mr-2" id="edit-btn-<%= todo._id %>" onclick="enableEdit('<%= todo._id %>')">Edit</button>
+
+                            <!-- Update and Cancel Buttons (hidden initially) -->
+                            <button class="btn btn-success btn-sm mr-2 d-none" id="update-btn-<%= todo._id %>" onclick="updateTask('<%= todo._id %>')">Update</button>
+                            <button class="btn btn-secondary btn-sm mr-2 d-none" id="cancel-btn-<%= todo._id %>" onclick="cancelEdit('<%= todo._id %>')">Cancel</button>
+
+                            <!-- Delete Button -->
+                            <form method="POST" action="/todo/destroy" style="display: inline;">
+                                <input type="hidden" name="_key" value="<%= todo._id %>">
+                                <button class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
+                    </li>
+                <% }) %>
+            <% } else { %>
+                <li class="list-group-item text-center">No tasks available.</li>
+            <% } %>
+        </ul>
+
+        <!-- JavaScript for Inline Edit functionality -->
+        <script>
+        // Enable edit mode
+        function enableEdit(id) {
+            document.getElementById(`task-text-${id}`).classList.add('d-none'); // Hide the task text
+            document.getElementById(`task-input-${id}`).classList.remove('d-none'); // Show the input field
+
+            document.getElementById(`edit-btn-${id}`).classList.add('d-none'); // Hide Edit button
+            document.getElementById(`update-btn-${id}`).classList.remove('d-none'); // Show Update button
+            document.getElementById(`cancel-btn-${id}`).classList.remove('d-none'); // Show Cancel button
+        }
+
+        // Cancel edit mode
+        function cancelEdit(id) {
+            document.getElementById(`task-text-${id}`).classList.remove('d-none'); // Show the task text
+            document.getElementById(`task-input-${id}`).classList.add('d-none'); // Hide the input field
+
+            document.getElementById(`edit-btn-${id}`).classList.remove('d-none'); // Show Edit button
+            document.getElementById(`update-btn-${id}`).classList.add('d-none'); // Hide Update button
+            document.getElementById(`cancel-btn-${id}`).classList.add('d-none'); // Hide Cancel button
+        }
+
+        // Update task
+        function updateTask(id) {
+            const newTask = document.getElementById(`task-input-${id}`).value; // Get the updated task value
+
+            // Submit the update form programmatically
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/todo/update';
+
+            const inputTask = document.createElement('input');
+            inputTask.type = 'hidden';
+            inputTask.name = 'task';
+            inputTask.value = newTask;
+
+            const inputId = document.createElement('input');
+            inputId.type = 'hidden';
+            inputId.name = '_key';
+            inputId.value = id;
+
+            form.appendChild(inputTask);
+            form.appendChild(inputId);
+            document.body.appendChild(form);
+
+            form.submit(); // Submit the form
+        }
+        </script>
+    </div>
+
+    <!-- Include Bootstrap JS (Optional for additional components) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
